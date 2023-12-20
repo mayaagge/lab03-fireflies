@@ -26,7 +26,16 @@ turtles-own [clock]
 ;  their clock is set to a random integer in the range [0, cycle-length)
 ;  if their clock is 0, set their color to yellow.
 to setup
-
+  ca
+  crt numTurtles
+  [
+    setxy random-xcor random-ycor
+    set color gray - 3
+    set clock random cycle-length
+    if clock = 0
+    [set color yellow]
+  ]
+  reset-ticks
 end
 
 ; wiggle
@@ -35,7 +44,9 @@ end
 ; use a wiggle you feel would be appropriate
 ; turtles should not have a bias to one direction over another
 to wiggle
-
+  rt random 180
+  lt random 180
+  fd 1
 end
 
 ; recolor
@@ -45,7 +56,9 @@ end
 ; flashing firefly.
 ; otherwise, it should be dark gray.
 to recolor
-
+  ifelse clock = 0
+  [set color yellow]
+  [set color gray - 3]
 end
 
 ;updateClock
@@ -54,7 +67,11 @@ end
 ; if the turtle's clock reaches cycle-lengthm
 ; set it back to 0
 to updateClock
-
+  set clock clock + 1
+  if clock = cycle-length
+  [
+    set clock 0
+  ]
 end
 
 ; checkRadius
@@ -65,7 +82,13 @@ end
 ; clock to 1, which will sync it up wiht the next flash
 ; of that turtle.
 to checkRadius
-
+  if clock != 0
+  [
+    if any? other turtles in-radius 1 with [color = yellow]
+    [
+      set clock 1
+    ]
+  ]
 end
 
 ; go
@@ -77,9 +100,19 @@ end
 ; Once those steps have been taken for all turtles,
 ; the turtles should then update their colors
 to go
-
+  wait .05
+  ask turtles
+  [
+    wiggle
+    updateClock
+    checkRadius
+  ]
+  ask turtles
+  [
+    recolor
+  ]
+  tick
 end
-
 
 
 
