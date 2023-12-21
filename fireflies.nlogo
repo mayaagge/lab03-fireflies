@@ -34,6 +34,11 @@ to setup
     set clock random cycle-length
     if clock = 0
     [set color yellow]
+    if (who < beacons)
+    [
+      set clock 0
+      set size 3
+    ]
   ]
   reset-ticks
 end
@@ -91,6 +96,14 @@ to checkRadius
   ]
 end
 
+to reset-Beacons
+  ask turtles with [who < beacons]
+  [
+    set clock 0
+    recolor
+  ]
+end
+
 ; go
 ;
 ; Use the procedures above to run the model.
@@ -100,7 +113,6 @@ end
 ; Once those steps have been taken for all turtles,
 ; the turtles should then update their colors
 to go
-  wait .05
   ask turtles
   [
     wiggle
@@ -113,7 +125,6 @@ to go
   ]
   tick
 end
-
 
 
 
@@ -161,10 +172,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-61
-120
-127
-153
+24
+173
+90
+206
 NIL
 setup
 NIL
@@ -178,10 +189,10 @@ NIL
 1
 
 BUTTON
-61
-169
-124
-202
+25
+209
+88
+242
 NIL
 go
 T
@@ -226,6 +237,38 @@ cycle-length
 1
 NIL
 HORIZONTAL
+
+SLIDER
+22
+121
+194
+154
+beacons
+beacons
+0
+500
+398.0
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+25
+244
+161
+277
+NIL
+reset-Beacons
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
